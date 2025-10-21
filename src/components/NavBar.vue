@@ -33,7 +33,7 @@
     <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
 
     <v-toolbar-title class="text-uppercase">
-      <span class="font-weight-light">Water-Tree</span>
+      <span class="font-weight-light">Fork n Flame</span>
     </v-toolbar-title>
 
     <v-spacer></v-spacer>
