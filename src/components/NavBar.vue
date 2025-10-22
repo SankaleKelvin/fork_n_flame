@@ -33,10 +33,10 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
+import { computed, ref } from 'vue'
 import TokenService from '../services/tokenService'
 const drawer = ref(true)
-const isLoggedIn = ref(false)
+
 const paths = ref([
   { icon: 'mdi-magnify', text: 'Test-Page', route: '/test' },
   { icon: 'mdi-heart', text: 'About Us', route: '/about-us' },
@@ -44,9 +44,9 @@ const paths = ref([
   { icon: 'mdi-lock', text: 'Login', route: '/login' },
 ])
 
-onMounted(()=>{
-  isLoggedIn.value = !!TokenService.getToken();
-  console.log(isLoggedIn.value)
+const isLoggedIn = computed(()=>{
+  return !!TokenService.getToken();
+  console.log(isLoggedIn.value);
 })
 </script>
 <style scoped>
