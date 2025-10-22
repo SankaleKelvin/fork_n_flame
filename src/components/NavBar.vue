@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer
+  <!--v-navigation-drawer
     v-model="drawer"
     color="teal-darken-1"
     dark
@@ -27,7 +27,7 @@
         </v-list-item-content>
       </v-list-item>
     </v-list>
-  </v-navigation-drawer>
+  </v-navigation-drawer-->
   <v-app-bar color="teal darken-4">
 
     <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
