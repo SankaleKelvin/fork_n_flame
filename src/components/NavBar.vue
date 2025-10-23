@@ -26,7 +26,7 @@
         </v-list-item>
       </v-list>
     </v-menu>
-    <v-btn variant="outlined" color="white" class="ml-3">
+    <v-btn variant="outlined" color="white" class="ml-3" @click="logout">
       {{ isLoggedIn ? 'Logout' : 'Login' }}
     </v-btn>
   </v-app-bar>
@@ -42,12 +42,17 @@ const paths = ref([
   { icon: 'mdi-heart', text: 'About Us', route: '/about-us' },
   { icon: 'mdi-mail', text: 'Contact Us', route: '/contact-us' },
   { icon: 'mdi-lock', text: 'Login', route: '/login' },
+  { icon: 'mdi-account', text: 'Users', route: '/users'}
 ])
 
 const isLoggedIn = computed(()=>{
   return !!TokenService.getToken();
   console.log(isLoggedIn.value);
 })
+
+function logout(){
+  TokenService.clear();
+}
 </script>
 <style scoped>
 .border {

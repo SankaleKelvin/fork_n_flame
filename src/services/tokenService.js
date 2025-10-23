@@ -1,29 +1,22 @@
 class TokenService {
-  static setToken(token) {
-    localStorage.setItem('token', token)
+  static setToken(data) {
+    localStorage.setItem('token', data.token)
+    localStorage.setItem('user', JSON.stringify(data.user))
   }
 
-  static setUser(user) {
-    localStorage.setItem('user', JSON.stringify(user))
-  }
 
   static getToken() {
-    localStorage.getItem('token')
+    return localStorage.getItem('token')
   }
 
   static getUser() {
-    localStorage.getItem('user')
+    const user = localStorage.getItem('user')
     return user ? JSON.parse(user) : null
   }
 
   static logout() {
-    localStorage.removeItem('token')
-    localStorage.removeItem('user')
-  }
-
-  static clear(){
     localStorage.clear();
   }
-}
 
+}
 export default TokenService;

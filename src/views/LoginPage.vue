@@ -35,7 +35,7 @@
           <v-divider class="my-6" />
 
           <div class="text-center">
-            <small class="text-secondary">Become a member <RouterLink to="/sign-up">register</RouterLink> </small>
+            <h2 class="text-secondary">Don't have an account? <RouterLink to="/sign-up">register</RouterLink> </h2>
           </div>
         </v-card>
       </v-col>
@@ -47,7 +47,7 @@ import { ref } from 'vue'
 
 import api from '../services/api'
 import TokenService from '../services/tokenService'
-import { RouterLink } from 'vue-router'
+import router from '../router/index'
 
 const initialState = {
   email: '',
@@ -61,9 +61,9 @@ const state = ref({
 async function login() {
   try {
     const response = await api.post('/login', state.value)
+    TokenService.setToken(response.data)
     alert('Login Successful!:', response.data)
-    TokenService.setToken(response.data.token)
-    TokenService.setUser(response.data.user)
+    router.push('/welcome')
   } catch (error) {
     console.error('Login Failed', error.response?.data || error.message)
   }
