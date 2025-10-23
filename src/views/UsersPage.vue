@@ -72,6 +72,10 @@
             <v-text-field v-model="formModel.password" label="Password"></v-text-field>
           </v-col>
 
+          <v-col cols="12" md="6">
+            <v-text-field v-model="formModel.password_confirmation" label="Confirm Password"></v-text-field>
+          </v-col>
+
         </v-row>
       </template>
 
@@ -127,11 +131,10 @@
 
     formModel.value = {
       id: found.id,
-      title: found.title,
-      author: found.author,
-      genre: found.genre,
-      year: found.year,
-      pages: found.pages,
+      name: found.name,
+      email: found.email,
+      password: found.password,
+      password_confirmation: found.password_confirmation,
     }
 
     dialog.value = true
@@ -152,10 +155,18 @@
     }
   }
 
-  function save () {
+  async function save () {
     if (isEditing.value) {
       const index = users.value.findIndex(user => user.id === formModel.value.id)
-      users.value[index] = formModel.value
+      try{
+        const response = await api.post('/register', formModel.value);
+        alert('Save Successful!');
+        router.push('/welcome');
+      }
+      catch(error){
+        console.error('Failed to save User', error.response?.data);
+      }
+    //   users.value[index] = formModel.value
     } else {
       formModel.value.id = users.value.length + 1
       users.value.push(formModel.value)
