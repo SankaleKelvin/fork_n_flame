@@ -7,6 +7,7 @@ import SignUp from '../views/SignUp.vue'
 import WelcomePage from '../views/WelcomePage.vue'
 import AuthService from '../services/authService'
 import UsersPage from '../views/UsersPage.vue'
+import RestaurantPage from '../views/RestaurantPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -40,12 +41,17 @@ const router = createRouter({
       path: '/welcome',
       name: 'Welcome',
       component: WelcomePage,
-    },,
+    },
     {
       path: '/users',
       name: 'UsersPage',
-      component: UsersPage,
+      component: UsersPage
     },
+    {
+      path: '/restaurant',
+      name: 'RestaurantPage',
+      component: RestaurantPage
+    }
   ],
 });
 

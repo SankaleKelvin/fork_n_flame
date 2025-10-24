@@ -35,6 +35,7 @@
 <script setup>
 import { computed, ref } from 'vue'
 import TokenService from '../services/tokenService'
+import api from '../services/api'
 const drawer = ref(true)
 
 const paths = ref([
@@ -42,7 +43,8 @@ const paths = ref([
   { icon: 'mdi-heart', text: 'About Us', route: '/about-us' },
   { icon: 'mdi-mail', text: 'Contact Us', route: '/contact-us' },
   { icon: 'mdi-lock', text: 'Login', route: '/login' },
-  { icon: 'mdi-account', text: 'Users', route: '/users'}
+  { icon: 'mdi-account', text: 'Users', route: '/users'},
+  { icon: 'mdi-cafe', text: 'Restaurant', route: '/restaurant'}
 ])
 
 const isLoggedIn = computed(()=>{
@@ -50,8 +52,10 @@ const isLoggedIn = computed(()=>{
   console.log(isLoggedIn.value);
 })
 
-function logout(){
-  TokenService.clear();
+async function logout(){
+  const response = await api.post('/logout');
+  alert(JSON.stringify(response.data.message));
+  TokenService.logout();
 }
 </script>
 <style scoped>
