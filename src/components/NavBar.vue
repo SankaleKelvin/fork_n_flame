@@ -26,7 +26,12 @@
         </v-list-item>
       </v-list>
     </v-menu>
-    <v-btn variant="outlined" color="white" class="ml-3" @click="logout">
+    <v-btn
+      variant="outlined"
+      color="white"
+      class="ml-3"
+      @click="handleAuth"
+    >
       {{ isLoggedIn ? 'Logout' : 'Login' }}
     </v-btn>
   </v-app-bar>
@@ -36,6 +41,7 @@
 import { computed, ref } from 'vue'
 import TokenService from '../services/tokenService'
 import api from '../services/api'
+import router from '../router/index'
 const drawer = ref(true)
 
 const paths = ref([
@@ -43,19 +49,30 @@ const paths = ref([
   { icon: 'mdi-heart', text: 'About Us', route: '/about-us' },
   { icon: 'mdi-mail', text: 'Contact Us', route: '/contact-us' },
   { icon: 'mdi-lock', text: 'Login', route: '/login' },
-  { icon: 'mdi-account', text: 'Users', route: '/users'},
-  { icon: 'mdi-cafe', text: 'Restaurant', route: '/restaurant'}
+  { icon: 'mdi-account', text: 'Users', route: '/users' },
+  { icon: 'mdi-cafe', text: 'Restaurant', route: '/restaurant' },
 ])
 
-const isLoggedIn = computed(()=>{
-  return !!TokenService.getToken();
-  console.log(isLoggedIn.value);
+const isLoggedIn = computed(() => {
+  return !!TokenService.getToken()
+  console.log(isLoggedIn.value)
 })
 
-async function logout(){
-  const response = await api.post('/logout');
-  alert(JSON.stringify(response.data.message));
-  TokenService.logout();
+async function handleAuth() {
+  if (isLoggedIn.value) {
+    try{
+    await api.post('/logout')
+        alert(JSON.stringify(response.data.message))
+      } catch (error) {
+        console.warn('Logout Failed!')
+      } finally {
+        TokenService.logout()
+        router.push('/login')
+      }
+    
+  } else {
+    router.push('/login')
+  }
 }
 </script>
 <style scoped>

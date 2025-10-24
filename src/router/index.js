@@ -60,7 +60,7 @@ router.beforeEach((to, from, next) => {
   const authRequired = !publicPages.includes(to.path);
   const loggedIn = AuthService.isLoggedIn();
 
-  if(!loggedIn & authRequired){
+  if(!loggedIn && authRequired){
     return next('/login');
   }
   next()
