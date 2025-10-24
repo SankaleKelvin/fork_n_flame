@@ -26,12 +26,7 @@
         </v-list-item>
       </v-list>
     </v-menu>
-    <v-btn
-      variant="outlined"
-      color="white"
-      class="ml-3"
-      @click="handleAuth"
-    >
+    <v-btn variant="outlined" color="white" class="ml-3" @click="handleAuth">
       {{ isLoggedIn ? 'Logout' : 'Login' }}
     </v-btn>
   </v-app-bar>
@@ -39,10 +34,12 @@
 
 <script setup>
 import { computed, ref } from 'vue'
-import TokenService from '../services/tokenService'
+import { useAuthStore } from '../services/auth'
 import api from '../services/api'
 import router from '../router/index'
+
 const drawer = ref(true)
+const authStore = useAuthStore()
 
 const paths = ref([
   { icon: 'mdi-magnify', text: 'Test-Page', route: '/test' },
@@ -54,22 +51,19 @@ const paths = ref([
 ])
 
 const isLoggedIn = computed(() => {
-  return !!TokenService.getToken()
-  console.log(isLoggedIn.value)
+  return authStore.isLoggedIn
 })
 
 async function handleAuth() {
   if (isLoggedIn.value) {
-    try{
-    await api.post('/logout')
-        alert(JSON.stringify(response.data.message))
-      } catch (error) {
-        console.warn('Logout Failed!')
-      } finally {
-        TokenService.logout()
-        router.push('/login')
-      }
-    
+    try {
+      await api.post('/logout')
+    } catch (error) {
+      console.warn('Logout Failed!')
+    } finally {
+      authStore.logout()
+      router.push('/login')
+    }
   } else {
     router.push('/login')
   }
