@@ -7,6 +7,7 @@ export const useUserStore = defineStore('user', () => {
     return {
       name: '',
       email: '',
+      role_id: '',
       password: '',
       password_confirmation: '',
     }
@@ -15,6 +16,9 @@ export const useUserStore = defineStore('user', () => {
   const users = ref([])
   const formModel = ref(createNewRecord())
   const dialog = shallowRef(false)
+  const dialogDelete = shallowRef(false)
+  const editedIndex = -1
+  const itemToDelete = ''
   const isEditing = toRef(() => !!formModel.value.id)
 
   function add() {
@@ -29,21 +33,12 @@ export const useUserStore = defineStore('user', () => {
       id: found.id,
       name: found.name,
       email: found.email,
+      role_id: found.role_id,
       password: '',
       password_confirmation: '',
     }
 
     dialog.value = true
-  }
-
-  async function remove(id) {
-    //Delete Function
-    try {
-      await api.delete(`/deleteUser/${id}`)
-      location.reload()
-    } catch (error) {
-      console.error('Failed to Delete User.', error?.response?.message)
-    }
   }
 
   async function save() {
@@ -83,17 +78,37 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
+  function deleteUser(id) {
+    editedIndex.value = id
+    itemToDelete.value = id
+    dialogDelete.value = true
+  }
+
+  async function remove(id) {
+    //Delete Function
+    try {
+      await api.delete(`/deleteUser/${id}`)
+      location.reload()
+    } catch (error) {
+      console.error('Failed to Delete User.', error?.response?.message)
+    }
+  }
+
+  function closeDelete() {
+    dialogDelete.value = false
+  }
+
   return {
     users,
     formModel,
     isEditing,
     dialog,
+    dialogDelete,
     add,
     edit,
     remove,
     save,
     reset,
-    getUsers
-
+    getUsers,
   }
 })

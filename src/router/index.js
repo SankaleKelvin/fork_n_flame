@@ -41,27 +41,47 @@ const router = createRouter({
       path: '/welcome',
       name: 'Welcome',
       component: WelcomePage,
+      meta: {
+        requiresAuth: true,
+      },
     },
     {
       path: '/users',
       name: 'UsersPage',
-      component: UsersPage
+      component: UsersPage,
+      meta: {
+        requiresAuth: true,
+        requiredAbility: ['admin', 'editor', 'user'],
+      },
     },
     {
       path: '/restaurant',
       name: 'RestaurantPage',
-      component: RestaurantPage
-    }
+      component: RestaurantPage,
+      meta: {
+        requiresAuth: true,
+        requiredAbility: ['admin', 'editor', 'user'],
+      },
+    },
   ],
-});
+})
 
 router.beforeEach((to, from, next) => {
-  const publicPages = ['/', '/login', '/sign-up', '/about-us', '/test'];
-  const authRequired = !publicPages.includes(to.path);
-  const loggedIn = AuthService.isLoggedIn();
+  // const publicPages = ['/', '/login', '/sign-up', '/about-us', '/test'];
+  // const authRequired = !publicPages.includes(to.path);
+  const loggedIn = AuthService.isLoggedIn()
 
-  if(!loggedIn && authRequired){
-    return next('/login');
+  // if(!loggedIn && authRequired){
+  //   return next('/login');
+  // }
+
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (!loggedIn) {
+      return next('/login')
+    }
+    if (to.meta.requiredAbility && !AuthService.hasAbility(to.meta.requiredAbility)) {
+      return next('/welcome')
+    }
   }
   next()
 })

@@ -19,7 +19,7 @@
               Popular restaurants
             </v-toolbar-title>
 
-            <v-btn
+            <v-btn v-if="AuthService.hasAbility('admin')"
               class="me-2"
               prepend-icon="mdi-plus"
               rounded="lg"
@@ -40,14 +40,14 @@
 
         <template v-slot:item.actions="{ item }">
           <div class="d-flex ga-2 justify-end">
-            <v-icon
+            <v-icon v-if="AuthService.hasAbility(['editor', 'admin'])"
               color="medium-emphasis"
               icon="mdi-pencil"
               size="small"
               @click="restaurantStore.edit(item.id)"
             ></v-icon>
 
-            <v-icon
+            <v-icon v-if="AuthService.hasAbility('admin')"
               color="medium-emphasis"
               icon="mdi-delete"
               size="small"
@@ -107,6 +107,7 @@
 <script setup>
 import { onMounted } from 'vue'
 import { useRestaurantStore } from '../stores/restaurant'
+import AuthService from '../services/authService'
 
 const restaurantStore = useRestaurantStore()
 
